@@ -51,6 +51,10 @@ docker build \
 ```
 
 <!--
+docker run -it --gpus all joinaero/ubuntu18.04-cuda10.2:opencv4.4.0
+-->
+
+<!--
 #9 99.47 W: GPG error: https://developer.download.nvidia.cn/compute/cuda/repos/ubuntu1804/x86_64  Release: The following signatures were invalid: BADSIG F60F4B3D7FA2AF80 cudatools <cudatools@nvidia.com>
 #9 99.47 E: The repository 'https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64  Release' is not signed.
 -->
@@ -59,3 +63,13 @@ docker build \
 #9 1398. /codes/opencv_contrib/modules/xfeatures2d/src/boostdesc.cpp:654:20: fatal error: boostdesc_bgm.i: No such file or directory
 #9 1398.            #include "boostdesc_bgm.i"
 -->
+
+### [Darknet](https://github.com/AlexeyAB/darknet)
+
+```bash
+cd docker/ubuntu18.04-cuda10.2/opencv4.4.0/darknet/
+
+docker build \
+-t joinaero/ubuntu18.04-cuda10.2:opencv4.4.0-darknet \
+.
+```
