@@ -21,20 +21,24 @@ RUN mv /etc/apt/sources.list.d/*.list /home/ \
  && apt remove -y curl && apt autoremove -y \
  && rm -rf /var/lib/apt/lists/*
 
-RUN echo "export PATH=/usr/local/cuda/bin:/home/cmake/bin:\$PATH" >> ~/.bashrc \
- && echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/home/opencv-4.4.0/lib:\$LD_LIBRARY_PATH" >> ~/.bashrc
-
 RUN mv /etc/apt/sources.list.d/*.list /home/ \
  && apt update && apt install -y build-essential git \
  \
  && cd /home/ \
  && git clone --depth 1 ${darknet_url} \
- && cd /home/darknet/ \
- && ./build.sh \
  \
  && mv /home/*.list /etc/apt/sources.list.d/ \
  && apt remove -y git && apt autoremove -y \
  && rm -rf /var/lib/apt/lists/*
+
+RUN echo "export PATH=/home/cmake/bin\${PATH:+:\${PATH}}" >> ~/.bashrc \
+ && echo "export LD_LIBRARY_PATH=/home/opencv-4.4.0/lib:/usr/local/cuda/lib64/stubs\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}" >> ~/.bashrc
+
+RUN source /root/.bashrc \
+ && ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 \
+ && cd /home/darknet/ \
+ && ./build.sh \
+ && rm /usr/local/cuda/lib64/stubs/libcuda.so.1
 
 WORKDIR /home/darknet
 # ENTRYPOINT darknet

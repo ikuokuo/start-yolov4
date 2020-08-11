@@ -73,3 +73,33 @@ docker build \
 -t joinaero/ubuntu18.04-cuda10.2:opencv4.4.0-darknet \
 .
 ```
+
+<!--
+#9 147.6 /usr/bin/ld: warning: libcuda.so.1, needed by libdarknet.so, not found (try using -rpath or -rpath-link)
+#9 147.6 libdarknet.so: undefined reference to `cuCtxGetCurrent'
+#9 147.6 collect2: error: ld returned 1 exit status
+-->
+
+## How to detect image with pre-trained models
+
+```bash
+docker run -it --gpus all \
+--name darknet \
+--mount type=bind,source=$HOME/Codes/devel/datasets/coco2017,target=/home/coco2017 \
+--mount type=bind,source=$HOME/Codes/devel/models/yolov4,target=/home/yolov4 \
+joinaero/ubuntu18.04-cuda10.2:opencv4.4.0-darknet
+```
+
+```bash
+./darknet detector test cfg/coco.data cfg/yolov4.cfg /home/yolov4/yolov4.weights \
+-thresh 0.25 -ext_output -show \
+-out_filename /home/coco2017/result.jpg -out /home/coco2017/result.json \
+/home/coco2017/test2017/000000000001.jpg
+```
+
+<!--
+CUDA status Error: file: /home/darknet/src/dark_cuda.c : () : line: 39 : build time: Aug 10 2020 - 00:00:00
+
+ CUDA Error: forward compatibility was attempted on non supported HW
+CUDA Error: forward compatibility was attempted on non supported HW: Operation not permitted
+-->
