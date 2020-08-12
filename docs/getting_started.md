@@ -111,7 +111,7 @@ CUDA Error: forward compatibility was attempted on non supported HW: Operation n
 
 ## How to train on MS COCO 2017 dataset
 
-Train a subset of objects on MS COCO 2017 dataset.
+> Train a subset of objects on MS COCO 2017 dataset.
 
 ### Train Detector
 
