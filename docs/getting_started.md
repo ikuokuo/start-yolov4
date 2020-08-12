@@ -83,7 +83,13 @@ docker build \
 ## How to detect image with pre-trained models
 
 ```bash
+xhost +local:docker
+
 docker run -it --gpus all \
+-e DISPLAY \
+-e QT_X11_NO_MITSHM=1 \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v $HOME/.Xauthority:/root/.Xauthority \
 --name darknet \
 --mount type=bind,source=$HOME/Codes/devel/datasets/coco2017,target=/home/coco2017 \
 --mount type=bind,source=$HOME/Codes/devel/models/yolov4,target=/home/yolov4 \
@@ -92,8 +98,7 @@ joinaero/ubuntu18.04-cuda10.2:opencv4.4.0-darknet
 
 ```bash
 ./darknet detector test cfg/coco.data cfg/yolov4.cfg /home/yolov4/yolov4.weights \
--thresh 0.25 -ext_output -show \
--out_filename /home/coco2017/result.jpg -out /home/coco2017/result.json \
+-thresh 0.25 -ext_output -show -out /home/coco2017/result.json \
 /home/coco2017/test2017/000000000001.jpg
 ```
 

@@ -13,7 +13,7 @@ ARG opencv_contrib_url=https://github.com/opencv/opencv_contrib.git
 ENV CUDA_HOME /usr/local/cuda
 
 RUN mv /etc/apt/sources.list.d/*.list /home/ \
- && apt update && apt install -y build-essential cmake git \
+ && apt update && apt install -y build-essential cmake git libgtk-3-dev \
  \
  && mkdir -p /codes && cd /codes/ \
  \
