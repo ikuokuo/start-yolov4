@@ -1,5 +1,33 @@
 # Getting Started
 
+<!--  
+```bash
+$ nvidia-smi
+Sun Aug  8 00:00:00 2020
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 440.100      Driver Version: 440.100      CUDA Version: 10.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 208...  Off  | 00000000:07:00.0  On |                  N/A |
+|  0%   46C    P8    13W / 300W |    329MiB / 11016MiB |      3%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  GeForce RTX 208...  Off  | 00000000:08:00.0 Off |                  N/A |
+|  0%   45C    P8    19W / 300W |      1MiB / 11019MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0      1257      G   /usr/lib/xorg/Xorg                           159MiB |
+|    0      1620      G   /usr/bin/gnome-shell                         123MiB |
+|    0      3195      G   ...quest-channel-token=1242754644392399813    43MiB |
++-----------------------------------------------------------------------------+
+```
+-->
+
 ## Build using Docker
 
 ### [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda)
@@ -17,10 +45,13 @@ Sun Aug  8 00:00:00 2020
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |===============================+======================+======================|
-|   0  GeForce RTX 2060    Off  | 00000000:01:00.0 Off |                  N/A |
-| N/A   50C    P8     5W /  N/A |    538MiB /  5934MiB |      2%      Default |
+|   0  GeForce RTX 208...  Off  | 00000000:07:00.0  On |                  N/A |
+|  0%   48C    P8    14W / 300W |    340MiB / 11016MiB |      2%      Default |
 +-------------------------------+----------------------+----------------------+
-
+|   1  GeForce RTX 208...  Off  | 00000000:08:00.0 Off |                  N/A |
+|  0%   45C    P8    19W / 300W |      1MiB / 11019MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
 +-----------------------------------------------------------------------------+
 | Processes:                                                       GPU Memory |
 |  GPU       PID   Type   Process name                             Usage      |
@@ -214,6 +245,11 @@ mkdir -p /home/yolov4/datasets/backup
 
 # Continue training
 ./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_last.weights
+
+# How to train with multi-GPU
+# 1. Train it first on 1 GPU for like 1000 iterations
+# 2. Then stop and by using partially-trained model `/backup/yolov4_1000.weights` run training with multigpu
+./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_1000.weights -gpus 0,1
 ```
 
 #### Detection
