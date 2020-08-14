@@ -121,7 +121,7 @@ CUDA Error: forward compatibility was attempted on non supported HW: Operation n
   * Edit: keep desired objects
 * [cfg/coco/yolov4.cfg](../cfg/coco/yolov4.cfg) &lt;[cfg/coco/yolov4.cfg.bak](../cfg/coco/yolov4.cfg.bak) is original file&gt;
   * Download [yolov4.cfg](https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4.cfg), then changed:
-  * `batch`=64, `subdivisions`=16
+  * `batch`=64, `subdivisions`=32 &lt;32 for 8-12 GB GPU-VRAM&gt;
   * `width`=512, `height`=512 &lt;any value multiple of 32&gt;
   * `classes`=&lt;your number of objects in each of 3 [yolo]-layers&gt;
   * `max_batches`=&lt;classes\*2000, but not less than number of training images and not less than 6000&gt;
