@@ -133,6 +133,8 @@ joinaero/ubuntu18.04-cuda10.2:opencv4.4.0-darknet
 /home/coco2017/test2017/000000000001.jpg
 ```
 
+![](images/coco2017-test2017-000000000001.png)
+
 <!--
 CUDA status Error: file: /home/darknet/src/dark_cuda.c : () : line: 39 : build time: Aug 10 2020 - 00:00:00
 
@@ -252,12 +254,16 @@ mkdir -p /home/yolov4/datasets/backup
 ./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_1000.weights -gpus 0,1
 ```
 
+![](images/coco2017-train-chart.png)
+
 #### Detection
 
 ```bash
 ./darknet detector test /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_final.weights \
 -ext_output -show /home/yolov4/datasets/val2017/000000006040.jpg
 ```
+
+![](images/coco2017-val2017-000000006040.png)
 
 <!--
 ### Evaluate Accuracy and FPS
