@@ -1,6 +1,6 @@
 classes=1
-train=/home/yolov4/datasets/train2017.txt
-valid=/home/yolov4/datasets/val2017.txt
+train=/home/yolov4/coco2017/train2017.txt
+valid=/home/yolov4/coco2017/val2017.txt
 names=/home/cfg/coco.names
-backup=/home/yolov4/datasets/backup
+backup=/home/yolov4/coco2017/backup
 eval=coco

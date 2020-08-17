@@ -99,7 +99,7 @@ def _parse_args():
       help="coco desired objects, default: %(default)s")
 
   parser.add_argument("--output_dir", type=str,
-      default=f"{os.environ['HOME']}/yolov4/datasets/",
+      default=f"{os.environ['HOME']}/yolov4/coco2017/",
       help="output dir for yolo datasets, default: %(default)s")
   parser.add_argument("--output_name", type=str,
       default="train",

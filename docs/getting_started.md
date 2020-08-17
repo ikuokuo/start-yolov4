@@ -187,24 +187,24 @@ python scripts/coco2yolo.py \
 --coco_img_dir $COCO_DIR/train2017/ \
 --coco_ann_file $COCO_DIR/annotations/instances_train2017.json \
 --yolo_names_file ./cfg/coco/coco.names \
---output_dir ~/yolov4/datasets/ \
+--output_dir ~/yolov4/coco2017/ \
 --output_name train2017 \
---output_img_prefix /home/yolov4/datasets/train2017/
+--output_img_prefix /home/yolov4/coco2017/train2017/
 
 # valid
 python scripts/coco2yolo.py \
 --coco_img_dir $COCO_DIR/val2017/ \
 --coco_ann_file $COCO_DIR/annotations/instances_val2017.json \
 --yolo_names_file ./cfg/coco/coco.names \
---output_dir ~/yolov4/datasets/ \
+--output_dir ~/yolov4/coco2017/ \
 --output_name val2017 \
---output_img_prefix /home/yolov4/datasets/val2017/
+--output_img_prefix /home/yolov4/coco2017/val2017/
 ```
 
 Result:
 
 ```txt
-~/yolov4/datasets/
+~/yolov4/coco2017/
 ├── train2017/
 │   ├── 000000000071.jpg
 │   ├── 000000000071.txt
@@ -235,23 +235,23 @@ docker run -it --gpus all \
 -v $HOME/.Xauthority:/root/.Xauthority \
 --name darknet \
 --mount type=bind,source=$HOME/Codes/devel/models/yolov4,target=/home/yolov4 \
---mount type=bind,source=$HOME/yolov4/datasets,target=/home/yolov4/datasets \
+--mount type=bind,source=$HOME/yolov4/coco2017,target=/home/yolov4/coco2017 \
 --mount type=bind,source=$PWD/cfg/coco,target=/home/cfg \
 joinaero/ubuntu18.04-cuda10.2:opencv4.4.0-darknet
 
 
-mkdir -p /home/yolov4/datasets/backup
+mkdir -p /home/yolov4/coco2017/backup
 
 # Training command
 ./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/csdarknet53-omega.conv.105
 
 # Continue training
-./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_last.weights
+./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/coco2017/backup/yolov4_last.weights
 
 # How to train with multi-GPU
 # 1. Train it first on 1 GPU for like 1000 iterations
 # 2. Then stop and by using partially-trained model `/backup/yolov4_1000.weights` run training with multigpu
-./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_1000.weights -gpus 0,1
+./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/coco2017/backup/yolov4_1000.weights -gpus 0,1
 ```
 
 ![](images/coco2017-train-chart.png)
@@ -259,8 +259,8 @@ mkdir -p /home/yolov4/datasets/backup
 #### Detection
 
 ```bash
-./darknet detector test /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/datasets/backup/yolov4_final.weights \
--ext_output -show /home/yolov4/datasets/val2017/000000006040.jpg
+./darknet detector test /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/coco2017/backup/yolov4_final.weights \
+-ext_output -show /home/yolov4/coco2017/val2017/000000006040.jpg
 ```
 
 ![](images/coco2017-val2017-000000006040.png)
