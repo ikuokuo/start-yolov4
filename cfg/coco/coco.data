@@ -1,4 +1,4 @@
-classes=80
+classes=1
 train=/home/yolov4/datasets/train2017.txt
 valid=/home/yolov4/datasets/val2017.txt
 names=/home/cfg/coco.names
