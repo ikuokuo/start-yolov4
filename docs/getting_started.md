@@ -254,6 +254,8 @@ mkdir -p /home/yolov4/coco2017/backup
 ./darknet detector train /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/coco2017/backup/yolov4_1000.weights -gpus 0,1
 ```
 
+> Train with flag `-map` then you will see mAP indicator `Last accuracy mAP@0.5 = 18.50%` in the console - this indicator is better than Loss, so train while mAP increases.
+
 ![](images/coco2017-train-chart.png)
 
 #### Detection
@@ -264,6 +266,31 @@ mkdir -p /home/yolov4/coco2017/backup
 ```
 
 ![](images/coco2017-val2017-000000006040.png)
+
+To check accuracy mAP@IoU=50:
+
+```bash
+$ ./darknet detector map /home/cfg/coco.data /home/cfg/yolov4.cfg /home/yolov4/coco2017/backup/yolov4_final.weights
+...
+Loading weights from /home/yolov4/coco2017/backup/yolov4_final.weights...
+ seen 64, trained: 384 K-images (6 Kilo-batches_64)
+Done! Loaded 162 layers from weights-file
+
+ calculation mAP (mean average precision)...
+ Detection layer: 139 - type = 27
+ Detection layer: 150 - type = 27
+ Detection layer: 161 - type = 27
+160
+ detections_count = 745, unique_truth_count = 190
+class_id = 0, name = train, ap = 80.61%   	 (TP = 142, FP = 18)
+
+ for conf_thresh = 0.25, precision = 0.89, recall = 0.75, F1-score = 0.81
+ for conf_thresh = 0.25, TP = 142, FP = 18, FN = 48, average IoU = 75.31 %
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall
+ mean average precision (mAP@0.50) = 0.806070, or 80.61 %
+Total Detection Time: 4 Seconds
+```
 
 <!--
 ### Evaluate Accuracy and FPS
