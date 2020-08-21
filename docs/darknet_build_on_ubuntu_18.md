@@ -1,4 +1,4 @@
-# Darknet Build on Host
+# Darknet Build on Ubuntu 18
 
 > Host: Ubuntu 18.04
 
