@@ -1,4 +1,4 @@
-# Getting Started
+# Darknet Train using Docker
 
 <!--
 ```bash
