@@ -255,9 +255,32 @@ cd darknet/
 ```
 
 ```bash
+$ export LD_LIBRARY_PATH=$HOME/opencv-cuda-4.4.0/lib:$LD_LIBRARY_PATH
+
 $ ./darknet v
  CUDA-version: 10020 (10020), cuDNN: 8.0.2, CUDNN_HALF=1, GPU count: 1
  CUDNN_HALF=1
- OpenCV isn't used - data augmentation will be slow
+ OpenCV version: 4.4.0
 Not an option: v
 ```
+
+## How to detect image with pre-trained models
+
+* Pre-trained models: [yolov4.weights](https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights)
+* Datasets: [MS COCO](http://cocodataset.org/#download)
+
+```bash
+cd ~/Codes/star/darknet/
+
+export LD_LIBRARY_PATH=$HOME/opencv-cuda-4.4.0/lib:$LD_LIBRARY_PATH
+
+export MY_MODEL_DIR=~/Codes/devel/models/yolov4
+export MY_COCO_DIR=~/Codes/devel/datasets/coco2017
+
+./darknet detector test cfg/coco.data cfg/yolov4.cfg \
+$MY_MODEL_DIR/yolov4.weights \
+-thresh 0.25 -ext_output -show \
+$MY_COCO_DIR/test2017/000000000001.jpg
+```
+
+![](images/coco2017-test2017-000000000001.png)
