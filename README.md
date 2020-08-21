@@ -8,3 +8,4 @@ YOLOv4: Optimal Speed and Accuracy of Object Detection
 ## Tutorial
 
 * [Darknet Train using Docker](docs/darknet_train_using_docker.md)
+* [Darknet Build on Host](docs/darknet_build_on_host.md)
