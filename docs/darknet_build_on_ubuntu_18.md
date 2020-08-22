@@ -90,11 +90,23 @@ $ vi ~/.bashrc
 export PATH=$HOME/Applications/cmake-3.18.2-Linux-x86_64/bin:$PATH
 ```
 
+### Python
+
+```bash
+# https://www.anaconda.com/distribution/
+bash Anaconda3-2019.10-Linux-x86_64.sh
+```
+
 ## Build
 
 ### OpenCV
 
 ```bash
+conda deactivate
+
+# export CONDA_HOME="/home/john/anaconda3/envs/clenv"
+export CONDA_HOME=`conda info -s | grep -Po "sys.prefix:\s*\K[/\w]*"`
+
 cd ~/Codes/star/
 
 git clone -b 4.4.0 --depth 1 https://github.com/opencv/opencv.git
@@ -106,6 +118,14 @@ mkdir _build && cd _build/
 cmake -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_INSTALL_PREFIX=$HOME/opencv-cuda-4.4.0 \
 -DOPENCV_EXTRA_MODULES_PATH=$HOME/Codes/star/opencv_contrib/modules \
+\
+-DPYTHON_EXECUTABLE=$CONDA_HOME/bin/python3.7 \
+-DPYTHON3_EXECUTABLE=$CONDA_HOME/bin/python3.7 \
+-DPYTHON3_LIBRARY=$CONDA_HOME/lib/libpython3.7m.so \
+-DPYTHON3_INCLUDE_DIR=$CONDA_HOME/include/python3.7m \
+-DPYTHON3_NUMPY_INCLUDE_DIRS=$CONDA_HOME/lib/python3.7/site-packages/numpy/core/include \
+-DBUILD_opencv_python2=OFF \
+-DBUILD_opencv_python3=ON \
 \
 -DWITH_CUDA=ON \
 \
@@ -119,6 +139,53 @@ make install
 ```
 
 ```bash
+conda activate
+
+export PYTHONPATH=$HOME/opencv-cuda-4.4.0/lib/python3.7/site-packages:$PYTHONPATH
+
+python - <<EOF
+import cv2
+print(cv2.__version__)
+EOF
+```
+
+#### Issue: libfontconfig.so.1
+
+```bash
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/home/john/opencv-cuda-4.4.0/lib/python3.7/site-packages/cv2/__init__.py", line 96, in <module>
+    bootstrap()
+  File "/home/john/opencv-cuda-4.4.0/lib/python3.7/site-packages/cv2/__init__.py", line 86, in bootstrap
+    import cv2
+ImportError: /home/john/anaconda3/bin/../lib/libfontconfig.so.1: undefined symbol: FT_Done_MM_Var
+```
+
+Solution:
+
+```bash
+cd $HOME/anaconda3/lib/
+mv libfontconfig.so.1 libfontconfig.so.1.bak
+ln -s /usr/lib/x86_64-linux-gnu/libfontconfig.so.1 libfontconfig.so.1
+```
+
+#### Issue: libpangoft2-1.0.so.0
+
+```bash
+ImportError: /home/john/anaconda3/bin/../lib/libpangoft2-1.0.so.0: undefined symbol: FcWeightToOpenTypeDouble
+```
+
+Solution:
+
+```bash
+cd $HOME/anaconda3/lib/
+mv libpangoft2-1.0.so.0 libpangoft2-1.0.so.0.bak
+ln -s /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 libpangoft2-1.0.so.0
+```
+
+#### Build Information
+
+```bash
 -- General configuration for OpenCV 4.4.0 =====================================
 --   Version control:               4.4.0
 --
@@ -127,9 +194,9 @@ make install
 --     Version control (extra):     4.4.0
 --
 --   Platform:
---     Timestamp:                   2020-08-21T03:59:08Z
+--     Timestamp:                   2020-08-22T16:43:48Z
 --     Host:                        Linux 5.4.0-42-generic x86_64
---     CMake:                       3.10.2
+--     CMake:                       3.18.2
 --     CMake generator:             Unix Makefiles
 --     CMake build tool:            /usr/bin/make
 --     Configuration:               Release
@@ -159,14 +226,14 @@ make install
 --     Linker flags (Debug):        -Wl,--exclude-libs,libippicv.a -Wl,--exclude-libs,libippiw.a   -Wl,--gc-sections -Wl,--as-needed
 --     ccache:                      NO
 --     Precompiled headers:         NO
---     Extra dependencies:          m pthread cudart_static -lpthread dl rt nppc nppial nppicc nppicom nppidei nppif nppig nppim nppist nppisu nppitc npps cublas cudnn cufft -L/usr/local/cuda/lib64 -L/usr/lib/x86_64-linux-gnu
+--     Extra dependencies:          m pthread cudart_static dl rt nppc nppial nppicc nppicom nppidei nppif nppig nppim nppist nppisu nppitc npps cublas cudnn cufft -L/usr/local/cuda/lib64 -L/usr/lib/x86_64-linux-gnu
 --     3rdparty dependencies:
 --
 --   OpenCV modules:
---     To be built:                 aruco bgsegm bioinspired calib3d ccalib core cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev datasets dnn dnn_objdetect dnn_superres dpm face features2d flann freetype fuzzy gapi hdf hfs highgui img_hash imgcodecs imgproc intensity_transform line_descriptor ml objdetect optflow phase_unwrapping photo plot quality rapid reg rgbd saliency shape stereo stitching structured_light superres surface_matching text tracking ts video videoio videostab xfeatures2d ximgproc xobjdetect xphoto
+--     To be built:                 aruco bgsegm bioinspired calib3d ccalib core cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev datasets dnn dnn_objdetect dnn_superres dpm face features2d flann freetype fuzzy gapi hfs highgui img_hash imgcodecs imgproc intensity_transform line_descriptor ml objdetect optflow phase_unwrapping photo plot python3 quality rapid reg rgbd saliency shape stereo stitching structured_light superres surface_matching text tracking ts video videoio videostab xfeatures2d ximgproc xobjdetect xphoto
 --     Disabled:                    world
 --     Disabled by dependency:      -
---     Unavailable:                 alphamat cnn_3dobj cvv java js julia matlab ovis python2 python3 sfm viz
+--     Unavailable:                 alphamat cnn_3dobj cvv hdf java js julia matlab ovis python2 sfm viz
 --     Applications:                perf_tests apps
 --     Documentation:               NO
 --     Non-free algorithms:         NO
@@ -225,7 +292,13 @@ make install
 --     Include path:                /home/john/Codes/star/opencv/3rdparty/include/opencl/1.2
 --     Link libraries:              Dynamic load
 --
---   Python (for build):            /home/john/anaconda3/bin/python3
+--   Python 3:
+--     Interpreter:                 /home/john/anaconda3/bin/python3.7 (ver 3.7.4)
+--     Libraries:                   /home/john/anaconda3/lib/libpython3.7m.so (ver 3.7.4)
+--     numpy:                       /home/john/anaconda3/lib/python3.7/site-packages/numpy/core/include (ver 1.19.1)
+--     install path:                lib/python3.7/site-packages/cv2/python-3.7
+--
+--   Python (for build):            /home/john/anaconda3/bin/python3.7
 --
 --   Java:
 --     ant:                         NO
@@ -284,3 +357,19 @@ $MY_COCO_DIR/test2017/000000000001.jpg
 ```
 
 ![](images/coco2017-test2017-000000000001.png)
+
+### Using Python
+
+```bash
+cd ~/Codes/star/darknet/
+python darknet_images.py -h
+
+python darknet_images.py \
+--batch_size 1 \
+--thresh 0.1 \
+--ext_output \
+--config_file cfg/yolov4.cfg \
+--data_file cfg/coco.data \
+--weights $MY_MODEL_DIR/yolov4.weights \
+--input $MY_COCO_DIR/test2017/000000000001.jpg
+```
