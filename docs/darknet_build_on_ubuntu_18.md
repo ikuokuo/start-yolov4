@@ -141,6 +141,7 @@ make install
 ```bash
 conda activate
 
+export LD_LIBRARY_PATH=$HOME/opencv-cuda-4.4.0/lib:$LD_LIBRARY_PATH
 export PYTHONPATH=$HOME/opencv-cuda-4.4.0/lib/python3.7/site-packages:$PYTHONPATH
 
 python - <<EOF
@@ -362,6 +363,10 @@ $MY_COCO_DIR/test2017/000000000001.jpg
 
 ```bash
 cd ~/Codes/star/darknet/
+
+export LD_LIBRARY_PATH=$HOME/opencv-cuda-4.4.0/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=$HOME/opencv-cuda-4.4.0/lib/python3.7/site-packages:$PYTHONPATH
+
 python darknet_images.py -h
 
 python darknet_images.py \
